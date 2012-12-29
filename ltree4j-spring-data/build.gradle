@@ -1,0 +1,3 @@
+description = 'ltree4j support for spring-data-jpa'
+
+dependencies.compile project(':ltree4j-core')

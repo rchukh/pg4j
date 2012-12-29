@@ -4,5 +4,7 @@
 .factorypath
 .project
 .springBeans
+.gradle/
 target/
 bin/
+build/

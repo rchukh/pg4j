@@ -1,0 +1,146 @@
+description = 'PostgreSQL ltree extension support for JPA'
+
+project('ltree4j-core') {
+	description = 'ltree4j core (Hibernate and JPA support)'
+}
+project('ltree4j-spring-data') {
+	description = 'ltree4j support for spring-data-jpa'
+}
+
+subprojects {
+	group = "com.github.ltree4j"
+	version = '0.1'
+	
+	// Properties
+	ext {
+		sourceEncoding 					= "UTF-8"
+		license						= new File( project.getRootProject().getRootDir().getPath() + '/LICENSE.md' ).getText( 'UTF-8' ) 
+
+		mavenRepo 					= "file://" + "$System.env.HOME" + "/.m2/remote-repository/"
+
+		// Dependencies
+		postgresqlDriverVersion 			= "9.1-901.jdbc4"
+		
+		hibernateJPAVersion 				= "1.0.1.Final"
+		hibernateVersion 				= "4.1.9.Final"
+
+		// Loggers
+		slf4jVersion					= "1.7.2"
+		logbackVersion					= "1.0.9"
+
+		// Testing
+		junitVersion 					= "4.11"
+	}
+
+	// Extra plugins
+	apply plugin: "java"
+	apply plugin: 'maven'
+	apply plugin: 'signing'
+	apply plugin: 'eclipse'
+	apply plugin: "sonar"
+
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		// JBoss Release Repository
+		maven { url "https://repository.jboss.org/nexus/content/groups/public/" }
+	}
+
+	dependencies {
+		compile(
+			[group: 'postgresql', name:'postgresql', version:"${postgresqlDriverVersion}"],
+			[group: 'org.slf4j', name:'slf4j-api', version:"${slf4jVersion}"],
+			// Hibernate			
+			[group: 'org.hibernate.javax.persistence', name:'hibernate-jpa-2.0-api', version:"${hibernateJPAVersion}"],
+			[group: 'org.hibernate', name:'hibernate-entitymanager', version:"${hibernateVersion}"]
+		)
+		runtime(
+			[group: 'ch.qos.logback', name:'logback-core', version:"${logbackVersion}"],
+			[group: 'ch.qos.logback', name:'logback-classic', version:"${logbackVersion}"],
+			[group: 'ch.qos.logback', name:'logback-access', version:"${logbackVersion}"]
+		)
+		testCompile(
+			[group: 'junit', name:'junit', version:"${junitVersion}"]
+		)
+	}
+	
+	// Compiler settings
+	sourceCompatibility=1.7
+	targetCompatibility=1.7
+	// All compilers will use same encoding
+	tasks.withType(Compile) {
+		options.encoding = "${sourceEncoding}"
+	}
+	
+	// Maven settings
+	task sourcesJar(type: Jar, dependsOn:classes) {
+		classifier = 'sources'
+		from sourceSets.main.allSource
+	}
+	task javadocJar(type: Jar, dependsOn:javadoc) {
+		classifier = 'javadoc'
+		from javadoc.destinationDir
+	}
+	artifacts {
+		archives sourcesJar
+		archives javadocJar
+	}
+	
+	signing {
+		sign configurations.archives
+	}
+
+	// Sonar settings
+	sonar {
+		server {
+			url = "http://localhost:9000"
+		}
+		database {
+			url = "jdbc:postgresql://localhost/sonar"
+			driverClassName = "org.postgresql.Driver"
+			username = "techsupport"
+			password = "techsupport"
+		}
+		project.sourceEncoding = "${sourceEncoding}"
+	}
+
+	// Send packages to 'dist' folder
+	uploadArchives {
+		repositories {
+			flatDir {
+				dirs 'dist'
+			}
+			// TODO: Switch maven repo with profiles?
+			mavenDeployer {
+				repository(url: "${mavenRepo}")
+				pom.project {
+					description project.description
+		 			url 'https://github.com/rchukh/ltree4j'
+					packaging 'jar'
+					scm {
+						url 'scm:git@github.com:rchukh/ltree4j.git'
+						connection 'scm:git@github.com:rchukh/ltree4j.git'
+						developerConnection 'scm:git@github.com:rchukh/ltree4j.git'
+					}
+					licenses {
+						license {
+							name 'BSD 2-Clause license'
+							url 'http://opensource.org/licenses/BSD-2-Clause'
+							comments "$license"
+							distribution 'repo'
+						}
+					}
+					developers {
+						developer {
+							id 			= 'rchukh'
+							name 		= 'Roman Chukh'
+							email 		= 'rchukh@gmx.com'
+							url 		= 'https://github.com/rchukh'
+							timezone 	= '+2'
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,4 @@
+rootProject.name = 'ltree4j'
+
+include "ltree4j-core"
+include "ltree4j-spring-data"
