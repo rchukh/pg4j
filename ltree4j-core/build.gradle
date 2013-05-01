@@ -1,3 +1,0 @@
-description = 'ltree4j core (Hibernate and JPA support)'
-
-apply plugin: 'java'
