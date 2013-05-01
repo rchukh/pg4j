@@ -1,35 +1,35 @@
 description = 'PostgreSQL ltree extension support for JPA'
 
-project('ltree4j-core') {
-	description = 'ltree4j core (Hibernate and JPA support)'
+project('pg4j-core') {
+	description = 'pg4j core (Hibernate and JPA support)'
 }
-project('ltree4j-spring-data') {
-	description = 'ltree4j support for spring-data-jpa'
+project('pg4j-spring-data') {
+	description = 'pg4j support for spring-data-jpa'
 }
 
 subprojects {
-	group = "com.github.ltree4j"
+	group = "com.github.pg4j"
 	version = '0.1'
 	
 	// Properties
 	ext {
-		sourceEncoding 					= "UTF-8"
-		license						= new File( project.getRootProject().getRootDir().getPath() + '/LICENSE.md' ).getText( 'UTF-8' ) 
+		sourceEncoding 				= "UTF-8"
+		license					= new File( project.getRootProject().getRootDir().getPath() + '/LICENSE.md' ).getText( 'UTF-8' ) 
 
-		mavenRepo 					= "file://" + "$System.env.HOME" + "/.m2/remote-repository/"
+		mavenRepo 				= "file://" + "$System.env.HOME" + "/.m2/remote-repository/"
 
 		// Dependencies
-		postgresqlDriverVersion 			= "9.1-901.jdbc4"
+		postgresqlDriverVersion 		= "9.1-901.jdbc4"
 		
-		hibernateJPAVersion 				= "1.0.1.Final"
-		hibernateVersion 				= "4.1.9.Final"
+		hibernateJPAVersion 			= "1.0.1.Final"
+		hibernateVersion 			= "4.2.1.Final"
 
 		// Loggers
-		slf4jVersion					= "1.7.2"
-		logbackVersion					= "1.0.9"
+		slf4jVersion				= "1.7.5"
+		logbackVersion				= "1.0.11"
 
 		// Testing
-		junitVersion 					= "4.11"
+		junitVersion 				= "4.11"
 	}
 
 	// Extra plugins
@@ -37,7 +37,8 @@ subprojects {
 	apply plugin: 'maven'
 	apply plugin: 'signing'
 	apply plugin: 'eclipse'
-	apply plugin: "sonar"
+	apply plugin: "sonar-runner"
+
 
 	repositories {
 		mavenLocal()
@@ -91,17 +92,15 @@ subprojects {
 	}
 
 	// Sonar settings
-	sonar {
-		server {
-			url = "http://localhost:9000"
+	sonarRunner {
+		sonarProperties {
+			property "sonar.host.url", "http://localhost:9000"
+			property "sonar.jdbc.url", "jdbc:postgresql://localhost/sonar"
+			property "sonar.jdbc.driverClassName", "org.postgresql.Driver"
+			property "sonar.jdbc.username", "techsupport"
+			property "sonar.jdbc.password", "techsupport"
+			property "sonar.sourceEncoding", "${sourceEncoding}"
 		}
-		database {
-			url = "jdbc:postgresql://localhost/sonar"
-			driverClassName = "org.postgresql.Driver"
-			username = "techsupport"
-			password = "techsupport"
-		}
-		project.sourceEncoding = "${sourceEncoding}"
 	}
 
 	// Send packages to 'dist' folder
@@ -115,12 +114,12 @@ subprojects {
 				repository(url: "${mavenRepo}")
 				pom.project {
 					description project.description
-		 			url 'https://github.com/rchukh/ltree4j'
+		 			url 'https://github.com/rchukh/pg4j'
 					packaging 'jar'
 					scm {
-						url 'scm:git@github.com:rchukh/ltree4j.git'
-						connection 'scm:git@github.com:rchukh/ltree4j.git'
-						developerConnection 'scm:git@github.com:rchukh/ltree4j.git'
+						url 'scm:git@github.com:rchukh/pg4j.git'
+						connection 'scm:git@github.com:rchukh/pg4j.git'
+						developerConnection 'scm:git@github.com:rchukh/pg4j.git'
 					}
 					licenses {
 						license {
@@ -134,7 +133,7 @@ subprojects {
 						developer {
 							id 			= 'rchukh'
 							name 		= 'Roman Chukh'
-							email 		= 'rchukh@gmx.com'
+							email 		= 'roman.chukh@gmail.com'
 							url 		= 'https://github.com/rchukh'
 							timezone 	= '+2'
 						}

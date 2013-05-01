@@ -1,14 +1,12 @@
-description = 'ltree4j support for spring-data-jpa'
+description = 'pg4j support for spring-data-jpa'
 
 // Properties
 ext {
 	spring_data_jpa_version = "1.2.0.RELEASE"
 }
 
-apply plugin: 'java'
-
 dependencies {
-	compile project(':ltree4j-core'),
+	compile project(':pg4j-core'),
 	compile(
 		[group: 'org.springframework.data', name:'spring-data-jpa', version:"${spring_data_jpa_version}"]
 	)

@@ -1,4 +1,4 @@
-Copyright (c) 2012, Roman Chukh
+Copyright (c) 2012-2013, Roman Chukh
 
 All rights reserved.
 

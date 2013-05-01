@@ -1,4 +1,4 @@
-rootProject.name = 'ltree4j'
+rootProject.name = 'pg4j'
 
-include "ltree4j-core"
-include "ltree4j-spring-data"
+include "pg4j-core"
+include "pg4j-spring-data"

@@ -1,4 +1,4 @@
-ltree4j
+pg4j
 ============
 
-PostgreSQL ltree extension support for JPA
+PostgreSQL extensions support for JPA/Spring Data
