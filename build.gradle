@@ -19,7 +19,7 @@ subprojects {
 		mavenRepo 				= "file://" + "$System.env.HOME" + "/.m2/remote-repository/"
 
 		// Dependencies
-		postgresqlDriverVersion 		= "9.1-901.jdbc4"
+		postgresqlDriverVersion 		= "9.2-1002-jdbc4"
 		
 		hibernateJPAVersion 			= "1.0.1.Final"
 		hibernateVersion 			= "4.2.1.Final"
@@ -49,7 +49,7 @@ subprojects {
 
 	dependencies {
 		compile(
-			[group: 'postgresql', name:'postgresql', version:"${postgresqlDriverVersion}"],
+			[group: 'org.postgresql', name:'postgresql', version:"${postgresqlDriverVersion}"],
 			[group: 'org.slf4j', name:'slf4j-api', version:"${slf4jVersion}"],
 			// Hibernate			
 			[group: 'org.hibernate.javax.persistence', name:'hibernate-jpa-2.0-api', version:"${hibernateJPAVersion}"],

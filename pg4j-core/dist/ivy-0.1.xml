@@ -4,7 +4,7 @@
 		module="pg4j-core"
 		revision="0.1"
 		status="integration"
-		publication="20130501192707"
+		publication="20130506185723"
 	/>
 	<configurations>
 		<conf name="archives" visibility="public" description="Configuration for archive artifacts."/>
@@ -24,7 +24,7 @@
 		<artifact name="pg4j-core" type="jar.asc" ext="asc" conf="archives,signatures" m:classifier="javadoc"/>
 	</publications>
 	<dependencies>
-		<dependency org="postgresql" name="postgresql" rev="9.1-901.jdbc4" conf="compile->default"/>
+		<dependency org="org.postgresql" name="postgresql" rev="9.2-1002-jdbc4" conf="compile->default"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.5" conf="compile->default"/>
 		<dependency org="org.hibernate.javax.persistence" name="hibernate-jpa-2.0-api" rev="1.0.1.Final" conf="compile->default"/>
 		<dependency org="org.hibernate" name="hibernate-entitymanager" rev="4.2.1.Final" conf="compile->default"/>
