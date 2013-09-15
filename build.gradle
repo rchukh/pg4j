@@ -1,145 +1,142 @@
-description = 'PostgreSQL ltree extension support for JPA'
+description = 'PostgreSQL extensions support for JPA'
 
-project('pg4j-core') {
-	description = 'pg4j core (Hibernate and JPA support)'
+project("pg4j-core") {
+    description = 'PG4J core (Hibernate and JPA support)'
 }
-project('pg4j-spring-data') {
-	description = 'pg4j support for spring-data-jpa'
+project("pg4j-spring-data") {
+    description = 'PG4J support for spring-data-jpa'
 }
 
 subprojects {
-	group = "com.github.pg4j"
-	version = '0.1'
-	
-	// Properties
-	ext {
-		sourceEncoding 				= "UTF-8"
-		license					= new File( project.getRootProject().getRootDir().getPath() + '/LICENSE.md' ).getText( 'UTF-8' ) 
+    group = "com.github.pg4j"
+    version = "0.1-SNAPSHOT"
 
-		mavenRepo 				= "file://" + "$System.env.HOME" + "/.m2/remote-repository/"
+    // Properties
+    ext {
+        sourceEncoding = "UTF-8"
+        license = new File(project.getRootProject().getRootDir().getPath() + '/LICENSE.md').getText('UTF-8')
 
-		// Dependencies
-		postgresqlDriverVersion 		= "9.2-1002-jdbc4"
-		
-		hibernateJPAVersion 			= "1.0.1.Final"
-		hibernateVersion 			= "4.2.1.Final"
+        // Dependencies
+        // Database
+        postgresql = "9.2-1003-jdbc4"
+        hibernate = "4.2.5.Final"
+        hibernateJPA = "1.0.1.Final"
 
-		// Loggers
-		slf4jVersion				= "1.7.5"
-		logbackVersion				= "1.0.11"
+        // Loggers
+        slf4j = "1.7.5"
+        logback = "1.0.13"
 
-		// Testing
-		junitVersion 				= "4.11"
-	}
+        // Testing
+        junit = "4.11"
+    }
 
-	// Extra plugins
-	apply plugin: "java"
-	apply plugin: 'maven'
-	apply plugin: 'signing'
-	apply plugin: 'eclipse'
-	apply plugin: "sonar-runner"
+    // Extra plugins
+    apply plugin: "java"
+    apply plugin: 'maven'
+    apply plugin: 'signing'
+    apply plugin: 'eclipse'
+    apply plugin: "sonar-runner"
 
 
-	repositories {
-		mavenLocal()
-		mavenCentral()
-		// JBoss Release Repository
-		maven { url "https://repository.jboss.org/nexus/content/groups/public/" }
-	}
+    repositories {
+        mavenCentral()
+        // JBoss Release Repository
+        maven { url "https://repository.jboss.org/nexus/content/groups/public/" }
+    }
 
-	dependencies {
-		compile(
-			[group: 'org.postgresql', name:'postgresql', version:"${postgresqlDriverVersion}"],
-			[group: 'org.slf4j', name:'slf4j-api', version:"${slf4jVersion}"],
-			// Hibernate			
-			[group: 'org.hibernate.javax.persistence', name:'hibernate-jpa-2.0-api', version:"${hibernateJPAVersion}"],
-			[group: 'org.hibernate', name:'hibernate-entitymanager', version:"${hibernateVersion}"]
-		)
-		runtime(
-			[group: 'ch.qos.logback', name:'logback-core', version:"${logbackVersion}"],
-			[group: 'ch.qos.logback', name:'logback-classic', version:"${logbackVersion}"],
-			[group: 'ch.qos.logback', name:'logback-access', version:"${logbackVersion}"]
-		)
-		testCompile(
-			[group: 'junit', name:'junit', version:"${junitVersion}"]
-		)
-	}
-	
-	// Compiler settings
-	sourceCompatibility=1.7
-	targetCompatibility=1.7
-	// All compilers will use same encoding
-	tasks.withType(Compile) {
-		options.encoding = "${sourceEncoding}"
-	}
-	
-	// Maven settings
-	task sourcesJar(type: Jar, dependsOn:classes) {
-		classifier = 'sources'
-		from sourceSets.main.allSource
-	}
-	task javadocJar(type: Jar, dependsOn:javadoc) {
-		classifier = 'javadoc'
-		from javadoc.destinationDir
-	}
-	artifacts {
-		archives sourcesJar
-		archives javadocJar
-	}
-	
-	signing {
-		sign configurations.archives
-	}
+    dependencies {
+        compile(
+                [group: 'org.postgresql', name: 'postgresql', version: "${postgresql}"],
+                [group: 'org.slf4j', name: 'slf4j-api', version: "${slf4j}"],
+                // Hibernate
+                [group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.0-api', version: "${hibernateJPA}"],
+                [group: 'org.hibernate', name: 'hibernate-entitymanager', version: "${hibernate}"]
+        )
+        runtime(
+                [group: 'ch.qos.logback', name: 'logback-core', version: "${logback}"],
+                [group: 'ch.qos.logback', name: 'logback-classic', version: "${logback}"],
+                [group: 'ch.qos.logback', name: 'logback-access', version: "${logback}"]
+        )
+        testCompile(
+                [group: 'junit', name: 'junit', version: "${junit}"]
+        )
+    }
 
-	// Sonar settings
-	sonarRunner {
-		sonarProperties {
-			property "sonar.host.url", "http://localhost:9000"
-			property "sonar.jdbc.url", "jdbc:postgresql://localhost/sonar"
-			property "sonar.jdbc.driverClassName", "org.postgresql.Driver"
-			property "sonar.jdbc.username", "techsupport"
-			property "sonar.jdbc.password", "techsupport"
-			property "sonar.sourceEncoding", "${sourceEncoding}"
-		}
-	}
+    // Compiler settings
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+    // All compilers will use same encoding
+    tasks.withType(Compile) {
+        options.encoding = "${sourceEncoding}"
+    }
 
-	// Send packages to 'dist' folder
-	uploadArchives {
-		repositories {
-			flatDir {
-				dirs 'dist'
-			}
-			// TODO: Switch maven repo with profiles?
-			mavenDeployer {
-				repository(url: "${mavenRepo}")
-				pom.project {
-					description project.description
-		 			url 'https://github.com/rchukh/pg4j'
-					packaging 'jar'
-					scm {
-						url 'scm:git@github.com:rchukh/pg4j.git'
-						connection 'scm:git@github.com:rchukh/pg4j.git'
-						developerConnection 'scm:git@github.com:rchukh/pg4j.git'
-					}
-					licenses {
-						license {
-							name 'BSD 2-Clause license'
-							url 'http://opensource.org/licenses/BSD-2-Clause'
-							comments "$license"
-							distribution 'repo'
-						}
-					}
-					developers {
-						developer {
-							id 			= 'rchukh'
-							name 		= 'Roman Chukh'
-							email 		= 'roman.chukh@gmail.com'
-							url 		= 'https://github.com/rchukh'
-							timezone 	= '+2'
-						}
-					}
-				}
-			}
-		}
-	}
+    // Maven settings
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+
+    signing {
+        sign configurations.archives
+    }
+
+    // Sonar settings
+    sonarRunner {
+        sonarProperties {
+            property "sonar.host.url", "http://localhost:9000"
+            property "sonar.jdbc.url", "jdbc:postgresql://localhost/sonar"
+            property "sonar.jdbc.driverClassName", "org.postgresql.Driver"
+            property "sonar.jdbc.username", "techsupport"
+            property "sonar.jdbc.password", "techsupport"
+            property "sonar.sourceEncoding", "${sourceEncoding}"
+        }
+    }
+
+    // Send packages to 'dist' folder
+    uploadArchives {
+        repositories {
+            flatDir {
+                dirs 'dist'
+            }
+            // TODO: Switch maven repo with profiles?
+//            mavenDeployer {
+////                repository(url: "${mavenRepo}")
+//                pom.project {
+////                    description project.description
+//                    url 'https://github.com/rchukh/pg4j'
+//                    packaging 'jar'
+//                    scm {
+//                        url 'scm:git@github.com:rchukh/pg4j.git'
+//                        connection 'scm:git@github.com:rchukh/pg4j.git'
+//                        developerConnection 'scm:git@github.com:rchukh/pg4j.git'
+//                    }
+//                    licenses {
+//                        license {
+//                            name 'BSD 2-Clause license'
+//                            url 'http://opensource.org/licenses/BSD-2-Clause'
+//                            comments "$license"
+//                            distribution 'repo'
+//                        }
+//                    }
+//                    developers {
+//                        developer {
+//                            id = 'rchukh'
+//                            name = 'Roman Chukh'
+//                            email = 'roman.chukh@gmail.com'
+//                            url = 'https://github.com/rchukh'
+//                            timezone = '+2'
+//                        }
+//                    }
+//                }
+//            }
+        }
+    }
 }
