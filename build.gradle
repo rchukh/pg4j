@@ -9,7 +9,7 @@ project("pg4j-spring-data") {
 
 subprojects {
     group = "com.github.pg4j"
-    version = "0.1-SNAPSHOT"
+    version = "0.2-SNAPSHOT"
 
     // Properties
     ext {
@@ -19,12 +19,17 @@ subprojects {
         // Dependencies
         // Database
         postgresql = "9.2-1003-jdbc4"
-        hibernate = "4.2.5.Final"
-        hibernateJPA = "1.0.1.Final"
+        hibernate = "4.3.0.Beta5"
+        hibernateJPA21 = "1.0.0.Final"
 
         // Loggers
         slf4j = "1.7.5"
         logback = "1.0.13"
+
+        // Tools
+        guava = "15.0"
+        jackson = "2.2.3"
+        jacksonJSR310 = "2.2.2-beta4"
 
         // Testing
         junit = "4.11"
@@ -49,8 +54,12 @@ subprojects {
                 [group: 'org.postgresql', name: 'postgresql', version: "${postgresql}"],
                 [group: 'org.slf4j', name: 'slf4j-api', version: "${slf4j}"],
                 // Hibernate
-                [group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.0-api', version: "${hibernateJPA}"],
-                [group: 'org.hibernate', name: 'hibernate-entitymanager', version: "${hibernate}"]
+                [group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: "${hibernateJPA21}"],
+                [group: 'org.hibernate', name: 'hibernate-entitymanager', version: "${hibernate}"],
+                // Tools
+                [group: 'com.google.guava', name: 'guava', version: "${guava}"],
+                [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: "${jackson}"],
+                [group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: "${jacksonJSR310}"]
         )
         runtime(
                 [group: 'ch.qos.logback', name: 'logback-core', version: "${logback}"],
@@ -63,8 +72,8 @@ subprojects {
     }
 
     // Compiler settings
-    sourceCompatibility = 1.7
-    targetCompatibility = 1.7
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
     // All compilers will use same encoding
     tasks.withType(Compile) {
         options.encoding = "${sourceEncoding}"
@@ -108,12 +117,12 @@ subprojects {
             }
             // TODO: Switch maven repo with profiles?
 //            mavenDeployer {
-////                repository(url: "${mavenRepo}")
+//                repository(url: "${mavenRepo}")
 //                pom.project {
 ////                    description project.description
 //                    url 'https://github.com/rchukh/pg4j'
 //                    packaging 'jar'
-//                    scm {
+//                   scm {
 //                        url 'scm:git@github.com:rchukh/pg4j.git'
 //                        connection 'scm:git@github.com:rchukh/pg4j.git'
 //                        developerConnection 'scm:git@github.com:rchukh/pg4j.git'
