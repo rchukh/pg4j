@@ -9,7 +9,7 @@ import com.github.pg4j.commons.jpa.criteria.ExpressionHelper;
 
 /**
  * Basic Spring-Data helper for using ltree operations.
- *
+ * 
  * @author <a href="mailto:roman.chukh@gmail.com">Roman Chukh</a>
  */
 public final class LTreeSpecs {

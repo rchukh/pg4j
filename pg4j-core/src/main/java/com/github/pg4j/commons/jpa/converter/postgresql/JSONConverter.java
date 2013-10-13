@@ -7,8 +7,9 @@ import org.postgresql.util.PGobject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pg4j.commons.exception.ConversionException;
+import com.google.common.annotations.Beta;
 
-// TODO: Test if this is working at all...
+@Beta
 public abstract class JSONConverter<T> extends PGObjectConverter<T> {
 	private static final String TYPE = "json";
 

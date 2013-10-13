@@ -12,17 +12,15 @@ import org.hibernate.type.Type;
  * @author <a href="mailto:roman.chukh@gmail.com">Roman Chukh</a>
  */
 public final class LTreeIsAncestorFunction extends LTreeFunction {
+	private static final String FORMAT = "(%s @> %s)";
+
 	@Override
 	public String render(Type firstArgumentType, @SuppressWarnings("rawtypes") List args,
 			SessionFactoryImplementor factory) throws QueryException {
 		// Null check, conversion, etc.
 		this.prepare(args);
-
-		StringBuilder result = new StringBuilder();
-		result.append("(");
-		result.append(this.prepareParam(this.getFirstParam()));
-		result.append(" @> ");
-		result.append(this.prepareParam(this.getSecondParam()));
-		return result.append(")").toString();
+		String firstParam = this.prepareParam(this.getFirstParam());
+		String secondParam = this.prepareParam(this.getSecondParam());
+		return String.format(FORMAT, firstParam, secondParam);
 	}
 }

@@ -2,10 +2,12 @@ package com.github.pg4j.commons.jpa.type;
 
 import java.util.Iterator;
 
+import com.google.common.annotations.Beta;
 import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 
+@Beta
 public final class LTree {
 	private static final Splitter SEPARATOR = Splitter.on('.');
 	private String path;

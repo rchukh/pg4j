@@ -8,10 +8,12 @@
 
 - Add "lquery" class in order to use in Criteria/JPQL (?)
 
+
 ----------
 ### Long term todos
 
-- [hstore](http://www.postgresql.org/docs/9.3/static/hstore.html) support (may(or may not) be postponed until 9.4 version... see next section)
+- [hstore](http://www.postgresql.org/docs/9.3/static/hstore.html) support. (may(or may not) be postponed until 9.4 version... see next section)
+- [range types](http://www.postgresql.org/docs/9.3/static/rangetypes.html) support. Using [Range](http://docs.guava-libraries.googlecode.com/git/javadoc/com/google/common/collect/Range.html) class from Guava.
 
 ----------
 ### *As soon as those features will be ready and I will have time...* todos
