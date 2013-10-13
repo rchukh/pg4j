@@ -8,7 +8,6 @@
 
 - Add "lquery" class in order to use in Criteria/JPQL (?)
 
-
 ----------
 ### Long term todos
 
@@ -20,4 +19,4 @@
 
 - Consider using [pgjdbc-ng](https://github.com/impossibl/pgjdbc-ng) (mostly because of it's binary format).
 - [Nested hstore with arrays support](http://www.pgcon.org/2013/schedule/events/518.en.html)
->   More details can be found [here](http://obartunov.livejournal.com/172503.html) and according to [this](http://obartunov.livejournal.com/174887.html) - there is already some progress in JSON support.
+  - More details can be found [here](http://obartunov.livejournal.com/172503.html) and according to [this](http://obartunov.livejournal.com/174887.html) - there is already some progress in JSON support.
